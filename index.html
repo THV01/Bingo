@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THV Bingo | Bingo Time</title>
+<style>
+:root {
+  --yellow: #ffdf57;
+  --blue: #86b5ff;
+  --red: #ff7777;
+  --black: #151515;
+  --gray: #737373;
+  --light: #f7f7f7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: white;
+  color: var(--black);
+  overflow-x: hidden;
+}
+
+nav {
+  padding: 22px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.logo span { color: #e0b800; }
+
+.nav-date {
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid #e5e5e5;
+  border-radius: 30px;
+  padding: 10px 14px;
+}
+
+.hero {
+  min-height: 650px;
+  padding: 100px 8% 85px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--gray);
+}
+
+h1 {
+  font-size: clamp(75px, 13vw, 150px);
+  line-height: .83;
+  letter-spacing: -10px;
+  margin: 30px 0;
+  font-weight: 950;
+}
+
+.yellow-text { color: #d8b000; }
+
+.hero p {
+  color: #666;
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 420px;
+  margin-bottom: 28px;
+}
+
+.button {
+  display: inline-block;
+  background: var(--black);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform .25s, background .25s;
+}
+
+.button:hover {
+  transform: translateY(-4px);
+  background: #333;
+}
+
+.balls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ball {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 900;
+  box-shadow: inset -10px -12px 20px #0002,
+              inset 7px 7px 14px #ffffff88,
+              0 20px 35px #00000012;
+  animation: float 5s ease-in-out infinite;
+}
+
+.ball-yellow {
+  background: var(--yellow);
+  width: 145px;
+  height: 145px;
+  font-size: 38px;
+  top: 15%;
+  right: 14%;
+  animation-delay: -.8s;
+}
+
+.ball-blue {
+  background: var(--blue);
+  color: white;
+  width: 95px;
+  height: 95px;
+  font-size: 25px;
+  top: 55%;
+  right: 9%;
+  animation-delay: -2s;
+}
+
+.ball-red {
+  background: var(--red);
+  color: white;
+  width: 65px;
+  height: 65px;
+  font-size: 19px;
+  top: 65%;
+  right: 30%;
+  animation-delay: -3s;
+}
+
+.ball-small {
+  background: #eee;
+  width: 45px;
+  height: 45px;
+  font-size: 13px;
+  top: 25%;
+  right: 38%;
+  animation-delay: -1.5s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  50% { transform: translateY(-25px) rotate(9deg); }
+}
+
+.pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.pill {
+  padding: 10px 14px;
+  border: 1px solid #e8e8e8;
+  border-radius: 30px;
+  font-size: 12px;
+  color: #555;
+}
+
+section.content {
+  padding: 90px 8%;
+}
+
+.section-heading {
+  font-size: clamp(38px, 6vw, 65px);
+  line-height: 1;
+  letter-spacing: -3px;
+  margin: 18px 0;
+}
+
+.section-intro {
+  color: var(--gray);
+  line-height: 1.8;
+  max-width: 500px;
+  margin-bottom: 35px;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.slot {
+  border: 1px solid #e8e8e8;
+  border-radius: 22px;
+  padding: 28px;
+  transition: transform .3s, box-shadow .3s;
+  background: white;
+}
+
+.slot:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 20px 45px #00000009;
+}
+
+.slot-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.slot h3 { font-size: 24px; }
+
+.slot p {
+  color: var(--gray);
+  margin-top: 9px;
+  font-size: 14px;
+}
+
+.slot-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--yellow);
+  font-weight: 900;
+}
+
+.slot:nth-child(2) .slot-number { background: var(--blue); color: white; }
+
+.note {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 18px;
+}
+
+.prizes-section { background: var(--light); }
+
+.prizes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 35px;
+}
+
+.prize {
+  background: white;
+  padding: 15px;
+  border-radius: 20px;
+  transition: transform .3s;
+}
+
+.prize:hover { transform: translateY(-7px) rotate(-1deg); }
+
+.prize-image {
+  height: 175px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 55px;
+  background: #f1f1f1;
+}
+
+.prize:nth-child(2) .prize-image { background: #fff0b3; }
+.prize:nth-child(3) .prize-image { background: #e3edff; }
+
+.prize h3 { margin: 17px 0 7px; }
+
+.prize p {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.final-cta {
+  padding: 110px 8%;
+  text-align: center;
+}
+
+.final-cta h2 {
+  font-size: clamp(45px, 8vw, 85px);
+  letter-spacing: -5px;
+  margin: 20px 0;
+}
+
+.final-cta p {
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+footer {
+  padding: 25px 8%;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+  color: var(--gray);
+  font-size: 12px;
+}
+
+.tiktok {
+  color: inherit;
+  text-decoration: none;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 700px) {
+  .hero {
+    min-height: 620px;
+    padding: 85px 7% 70px;
+    align-items: flex-start;
+  }
+
+  h1 {
+    font-size: clamp(72px, 17vw, 110px);
+    letter-spacing: -6px;
+  }
+
+  .ball-yellow {
+    width: 85px;
+    height: 85px;
+    font-size: 25px;
+    top: 10%;
+    right: 8%;
+  }
+
+  .ball-blue {
+    width: 60px;
+    height: 60px;
+    font-size: 16px;
+    top: 50%;
+    right: 5%;
+  }
+
+  .ball-red {
+    width: 43px;
+    height: 43px;
+    font-size: 13px;
+    top: 57%;
+    right: 27%;
+  }
+
+  .ball-small {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+    right: 35%;
+  }
+
+  section.content { padding: 70px 7%; }
+
+  .slots, .prizes { grid-template-columns: 1fr; }
+
+  .prize-image { height: 140px; }
+
+  .final-cta { padding: 80px 7%; }
+
+  .final-cta h2 { letter-spacing: -3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">THV<span>.</span> BINGO</div>
+  <div class="nav-date">19 NOVEMBER 2026</div>
+</nav>
+
+<header class="hero">
+  <div class="balls" aria-hidden="true">
+    <div class="ball ball-yellow">B</div>
+    <div class="ball ball-blue">12</div>
+    <div class="ball ball-red">7</div>
+    <div class="ball ball-small">24</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="eyebrow">Theater Havo / Vwo presents</div>
+    <h1>BINGO<br><span class="yellow-text">TIME.</span></h1>
+    <p>Een avond vol spanning, leuke prijzen en gezelligheid. Heb jij als eerste bingo?</p>
+    <a class="button" href="#info">Ontdek de bingo ↗</a>
+
+    <div class="pills">
+      <span class="pill">19 november</span>
+      <span class="pill">€4 per persoon</span>
+      <span class="pill">Max. 36 deelnemers</span>
+    </div>
+  </div>
+</header>
+
+<section class="content reveal" id="info">
+  <div class="eyebrow">Save your spot</div>
+  <h2 class="section-heading">Jouw avond.<br>Jouw geluk.</h2>
+  <p class="section-intro">Kies het tijdslot dat jou uitkomt en kom gezellig meespelen. Zorg dat je op tijd bent!</p>
+
+  <div class="slots">
+    <article class="slot">
+      <div class="slot-top">
+        <div>
+          <h3>Ronde 01</h3>
+          <p>17:00 tot 18:30</p>
+        </div>
+        <div class="slot-number">01</div>
+      </div>
+    </article>
+
+    <article class="slot">
+      <div class="slot-top">
+        <div>
+          <h3>Ronde 02</h3>
+          <p>19:00 tot 20:30</p>
+        </div>
+        <div class="slot-number">02</div>
+      </div>
+    </article>
+  </div>
+
+  <p class="note">Locatie volgt · Extra bingokaart kost €1 · Betalen aan de deur</p>
+</section>
+
+<section class="content prizes-section reveal">
+  <div class="eyebrow">What's at stake?</div>
+  <h2 class="section-heading">Leuke prijzen.<br>Grote bingo energy.</h2>
+  <p class="section-intro">Speel mee, luister goed en wie weet ga jij met een prijs naar huis.</p>
+
+  <div class="prizes">
+    <article class="prize">
+      <div class="prize-image">🎁</div>
+      <h3>Verrassing</h3>
+      <p>Welke prijs pak jij?</p>
+    </article>
+
+    <article class="prize">
+      <div class="prize-image">🏆</div>
+      <h3>De winnaar</h3>
+      <p>Bingo en win.</p>
+    </article>
+
+    <article class="prize">
+      <div class="prize-image">🎉</div>
+      <h3>Gezelligheid</h3>
+      <p>Een leuke avond met elkaar.</p>
+    </article>
+  </div>
+</section>
+
+<section class="final-cta reveal">
+  <div class="eyebrow">Ready to play?</div>
+  <h2>Mis het niet.</h2>
+  <p>19 november 2026<br>
+  Georganiseerd door Theater Havo/Vwo<br>
+  Locatie volgt</p>
+
+  <a class="button"
+     href="mailto:830665@vo.saro.org?subject=Vraag%20over%20THV%20Bingo">
+    Stel een vraag ↗
+  </a>
+
+  <p style="margin-top:22px;margin-bottom:0">
+    <a class="tiktok"
+       href="https://www.tiktok.com/@bingo.ondernemend?_r=1&_t=ZG-9BKIa8jxGKH"
+       target="_blank" rel="noopener noreferrer">
+      Volg ons op TikTok ↗
+    </a>
+  </p>
+</section>
+
+<footer>
+  <span>THV BINGO © 2026</span>
+  <span>Made for a good night.</span>
+</footer>
+
+<script>
+const revealElements = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealElements.forEach((element) => observer.observe(element));
+} else {
+  revealElements.forEach((element) => element.classList.add("visible"));
+}
+</script>
+
+</body>
+</html>
